@@ -9,7 +9,7 @@
 #include "player.h"
 #include "controls.h"
 #include "parallaxBackground.h"
-#include "debugText.h"
+#include "text.h"
 #include "audio.h"
 #include "global.h"
 #include "processmanager.h"
@@ -69,16 +69,14 @@ private:
 
 	// RJP - These variables need renaming.
 	TTF_Font* font;
-	DebugText* debugText;
-	DebugText* debugTextInGame;
+	Text* debugText;
+	Text* consoleText;
 	SDL_Texture* playerTexture;
 	AudioPlayer* audio;
 	Controls* controls;
 	ParallaxBackground* background;
 	ParallaxBackground* titleBackground;
 	Renderer* textureRenderer;
-
-	int iInputReturn;
 
 	bool quit;
 	bool bStateSwitch;
@@ -87,6 +85,11 @@ private:
 	int gameTime = 0;
 	int debugTextSize;
 	int debugTextSizeInGame;
+	int iInputReturn;
+
+	char* userInput;
+
+	std::string consoleOutput;
 
 	SDL_Color textColor;
 	SDL_Event event;

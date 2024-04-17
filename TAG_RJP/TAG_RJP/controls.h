@@ -5,16 +5,13 @@
 
 #pragma once
 
-#include "player.h"
 #include <SDL.h>
 
 class Controls
 {
-	public:
-		Controls(Player& player);
+public:
+	Controls() {};
+	char handleInput(SDL_Event& event);
 
-		int handleInput(SDL_Event& event, float deltaTime);
-
-	private:
-		Player& player;
+private:
 };

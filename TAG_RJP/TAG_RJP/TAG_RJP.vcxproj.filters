@@ -19,9 +19,6 @@
     <Filter Include="Source Files\Controls">
       <UniqueIdentifier>{fe871a50-b74b-4d0d-aaed-8ac1bcbf330d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Debug">
-      <UniqueIdentifier>{3e3ec154-3aa4-43e0-9373-9f55350b94f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Entity">
       <UniqueIdentifier>{3a63f28f-b230-4348-8689-781d695fb29d}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{4f9b2cb5-323b-470a-9c9c-85b07e479a4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Text">
+      <UniqueIdentifier>{3e3ec154-3aa4-43e0-9373-9f55350b94f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +78,12 @@
     <ClCompile Include="parallaxBackground.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="text.cpp">
+      <Filter>Source Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h">
@@ -86,8 +92,8 @@
     <ClInclude Include="controls.h">
       <Filter>Source Files\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="debugText.h">
-      <Filter>Source Files\Debug</Filter>
+    <ClInclude Include="text.h">
+      <Filter>Source Files\Text</Filter>
     </ClInclude>
     <ClInclude Include="entity.h">
       <Filter>Source Files\Entity</Filter>

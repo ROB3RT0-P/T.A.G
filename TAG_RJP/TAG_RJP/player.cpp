@@ -10,7 +10,7 @@ Player::Player(float x, float y) : fPlayerX_(x), fPlayerY_(y) {};
 
 static IEntity* playerEntityCreateFunc(void* user) {
 	Player* playerEntity = new Player();
-	// Should be already loaded but increases the ref count
+	// RJP - Should be already loaded but increases the ref count
 	global::resourceManager()->loadResource(raw_enum(global::Res::PlayerSprite));
 
 	return playerEntity;
@@ -32,6 +32,7 @@ void Player::registerWithEntityManager()
 
 void Player::init(float fScreenWidth, float fScreenHeight)
 {
+	// RJP - Most of this is to be removed.
     tTexture = nullptr;
 	fPlayerY_ = 100; // RJP - default starting point
 	fPlayerX_ = 100; // RJP - default starting point

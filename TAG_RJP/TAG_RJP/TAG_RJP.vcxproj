@@ -144,14 +144,16 @@
     <ClCompile Include="parallaxBackground.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="processmanager.cpp" />
+    <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resourcemanager.cpp" />
     <ClCompile Include="stateManager.cpp" />
+    <ClCompile Include="text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="controls.h" />
-    <ClInclude Include="debugText.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="entitymanager.h" />
     <ClInclude Include="game.h" />

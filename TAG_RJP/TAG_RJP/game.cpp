@@ -11,7 +11,7 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 	SCREEN_WIDTH = ScreenWidth;
 	SCREEN_HEIGHT = ScreenHeight;
 
-	//Initialize SDL
+	// RJP - Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
@@ -19,13 +19,13 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 	}
 	else
 	{
-		//Set texture filtering to linear
+		// RJP - Set texture filtering to linear
 		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		{
 			printf("Warning: Linear texture filtering not enabled!");
 		}
 
-		//Create window
+		// RJP - Create window
 		gWindow = SDL_CreateWindow("Text Adventure Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
@@ -34,7 +34,7 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 		}
 		else
 		{
-			//Create renderer for window
+			// RJP - Create renderer for window
 			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
 			if (gRenderer == NULL)
 			{
@@ -43,10 +43,10 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 			}
 			else
 			{
-				//Initialize renderer color
+				// RJP - Initialize renderer color
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-				//Initialize PNG loading
+				// RJP - Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags))
 				{
@@ -80,11 +80,15 @@ bool Game::loadInitialResources()
 	debugTextSize = 35;
 	debugTextSizeInGame = 25;
 	textColor = { 255, 255, 255, 255 };
-	debugText = new DebugText(gRenderer, "Data/kenney/Fonts/kenneyBlocks.ttf", debugTextSize, textColor);
+	debugText, consoleText = new Text(gRenderer, "Data/kenney/Fonts/kenneyBlocks.ttf", debugTextSize, textColor);
 	audio = new AudioPlayer();
 	audio->play("Data/music/titleMusic.mp3");
-	controls = new Controls(*playerEntity);
 
+	controls = new Controls();
+	
+	//userInput = "exampleText";
+	consoleOutput = "";
+	
 	return true;
 }
 
@@ -95,9 +99,37 @@ void Game::start(const Info& info) {
 	fScreenHeight = static_cast<float>(SCREEN_HEIGHT);
 }
 
-void Game::tickLogic(float deltaTime) {
+void Game::tickLogic(float deltaTime) 
+{
 	global::processManager()->tickProcesses();
 
+	controls->handleInput(event);
+
+	// RJP - This needs to be done in the console class.
+	char inputChar = controls->handleInput(event);
+	if (inputChar != '\0') 
+	{
+		char* tempUserInput = nullptr;
+		if (userInput) {
+			size_t userInputLength = strlen(userInput);
+
+			tempUserInput = new char[userInputLength + 2];
+
+			strcpy_s(tempUserInput, userInputLength + 1, userInput);
+		}
+		else {
+			tempUserInput = new char[2];
+		}
+
+		tempUserInput[strlen(tempUserInput)] = inputChar;
+		tempUserInput[strlen(tempUserInput) + 1] = '\0';
+
+		delete[] userInput;
+
+		userInput = tempUserInput;
+
+		consoleOutput = userInput;
+	}
 }
 
 void Game::blit(SDL_Texture* texture, float x, float y)
@@ -121,7 +153,7 @@ void Game::renderAndPresent()
 void Game::render(const Info& info)
 {
 	playerTexture = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::PlayerSprite));
-
+	consoleText->RenderText(consoleOutput, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 }
 
@@ -153,8 +185,7 @@ bool Game::handleEvents(float deltaTime)
 {
 	while (SDL_PollEvent(&event) != 0)
 	{
-		controls->handleInput(event, deltaTime);
-		iInputReturn = controls->handleInput(event, deltaTime);
+		controls->handleInput(event);
 	}
 
 	return 0;

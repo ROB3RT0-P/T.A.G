@@ -49,7 +49,7 @@ void ParallaxBackground::titleRender()
 {
     // RJP - To be changed.
     int y = yOffset;
-    int bC = 1160; // backgroundCenterer
+    int bC = 1160; // RJP - backgroundCenterer
     for (SDL_Texture* texture : layers) {
         SDL_Rect dstRect = { 0, y, 700, 1000 };
         SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
@@ -69,7 +69,7 @@ void ParallaxBackground::randMovement(int speed)
 void ParallaxBackground::render() 
 {
     int y = yOffset;
-    int bC = 1160; // backgroundCenterer
+    int bC = 1160; // RJP - backgroundCenterer
     for (SDL_Texture* texture : layers) {
         SDL_Rect dstRect = { 0, y - bC, 700, 2500 };
         SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
