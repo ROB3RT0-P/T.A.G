@@ -146,7 +146,6 @@
     <ClCompile Include="processmanager.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resourcemanager.cpp" />
-    <ClCompile Include="stateManager.cpp" />
     <ClCompile Include="text.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +165,7 @@
     <ClInclude Include="processmanager.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resourcemanager.h" />
-    <ClInclude Include="stateManager.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

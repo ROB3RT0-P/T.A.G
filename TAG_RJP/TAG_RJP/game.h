@@ -22,6 +22,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include "gameState.h"
+#include "utils.h"
+#include "console.h"
 
 // Forwards
 struct SDL_Texture;
@@ -77,6 +80,9 @@ private:
 	ParallaxBackground* background;
 	ParallaxBackground* titleBackground;
 	Renderer* textureRenderer;
+	StateMachine* stateMachine;
+	Utils* utils;
+	Console* console;
 
 	bool quit;
 	bool bStateSwitch;
@@ -87,9 +93,10 @@ private:
 	int debugTextSizeInGame;
 	int iInputReturn;
 
-	char* userInput;
+	char userInput;
 
-	std::string consoleOutput;
+	float consoleRenderPosX;
+	float consoleRenderPosY;
 
 	SDL_Color textColor;
 	SDL_Event event;

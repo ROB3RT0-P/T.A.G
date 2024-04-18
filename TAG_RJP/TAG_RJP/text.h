@@ -16,7 +16,7 @@ public:
     Text(SDL_Renderer* renderer, const std::string& fontPath, int fontSize, SDL_Color textColor);
     ~Text();
 
-    void RenderText(std::string& text, int x, int y);
+    void RenderConsoleText(std::string&& text, int x, int y);
 
 private:
     SDL_Renderer* renderer_;

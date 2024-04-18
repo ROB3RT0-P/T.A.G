@@ -6,8 +6,24 @@
 #pragma once
 
 enum class GameState {
-    START,
+    MENU,
     PLAY,
     PAUSE,
     GAMEOVER,
+};
+
+class StateMachine {
+public:
+    StateMachine() : currentState(GameState::MENU) {}
+
+    void setState(GameState newState) {
+        currentState = newState;
+    }
+
+    GameState getState() const {
+        return currentState;
+    }
+
+private:
+    GameState currentState;
 };

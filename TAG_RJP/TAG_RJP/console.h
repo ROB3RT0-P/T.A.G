@@ -5,12 +5,26 @@
 
 #pragma once
 
-class console
+#include <string>
+#include "utils.h"
+
+class Console
 {
 public:
+	Console() {};
+	~Console();
+
+	bool initConsole();
+	int manageInput(char userInput);
+
+	std::string getConsoleOutput() { return consoleOutput; }
 
 protected:
+	
 
 private:
-
+	char userInput;
+	int maxConsoleLen;
+	std::string consoleOutput;
+	Utils* utils;
 };

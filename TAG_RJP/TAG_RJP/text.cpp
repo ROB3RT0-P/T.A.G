@@ -28,7 +28,7 @@ Text::~Text()
     TTF_Quit();
 }
 
-void Text::RenderText(std::string& text, int x, int y)
+void Text::RenderConsoleText(std::string&& text, int x, int y)
 {
     int xOffset = 0;
     for (char ch : text) 
