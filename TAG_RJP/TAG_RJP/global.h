@@ -38,6 +38,9 @@ namespace global
 		Default,
 		PlayerSprite,
 		EnemySprite,
+		MainMenuSprite,
+		BackgroundSprite,
+		GameOverSprite,
 
 		Max = 256
 	};

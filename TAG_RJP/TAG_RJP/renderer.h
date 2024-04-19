@@ -15,14 +15,13 @@
 class Renderer
 {
 public:
-	Renderer(SDL_Renderer* renderer)
-	{
-		gRenderer = renderer;
-	}
+	Renderer(SDL_Renderer* renderer) : gRenderer(renderer) {};
 	~Renderer();
 
-	void textureRender(SDL_Texture* texture, float x, float y);
+	void textureRender(SDL_Texture* texture, float x, float y, float scaleX, float scaleY);
+	void fadeInOut(SDL_Renderer* renderer, int duration, bool fadeIn, float screenWidth, float screenHeight);
 
 private:
 	SDL_Renderer* gRenderer = NULL;
+	Uint32 fadeStartTime_;
 };

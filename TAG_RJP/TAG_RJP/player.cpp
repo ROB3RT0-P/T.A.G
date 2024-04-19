@@ -32,7 +32,7 @@ void Player::registerWithEntityManager()
 
 void Player::init(float fScreenWidth, float fScreenHeight)
 {
-	// RJP - Most of this is to be removed.
+	// RJP - Most of this is deprecated.
     tTexture = nullptr;
 	fPlayerY_ = 100; // RJP - default starting point
 	fPlayerX_ = 100; // RJP - default starting point
@@ -48,6 +48,8 @@ void Player::init(float fScreenWidth, float fScreenHeight)
 	setPlayerHealth(100);
 	setPlayerX(fScreenWidth * 0.5f);
 	setPlayerY(fScreenHeight * 0.7f);
+
+	uTurnsRemaining = 5;
 }
 
 void Player::update(float deltaTime)
@@ -105,7 +107,7 @@ void Player::checkBounds()
 
 void Player::render() {
 	tTexture = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::PlayerSprite));
-	global::game()->blit(tTexture, fPlayerX_, fPlayerY_);
+	//global::game()->blit(tTexture, fPlayerX_, fPlayerY_);
 }
 
 void Player::save() const

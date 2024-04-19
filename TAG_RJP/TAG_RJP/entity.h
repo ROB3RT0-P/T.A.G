@@ -62,7 +62,6 @@ private:
 		listPrev = this;
 	}
 
-
 	uint32_t type;
 	uint32_t id;
 	IEntity* listNext;

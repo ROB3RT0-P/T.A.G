@@ -57,3 +57,64 @@ void Text::RenderConsoleText(std::string&& text, int x, int y)
         SDL_FreeSurface(surface);
     }
 }
+
+
+void Text::RenderGameText(std::string&& text, int x, int y)
+{
+    int xOffset = 0;
+    for (char ch : text)
+    {
+        SDL_Surface* surface = TTF_RenderGlyph_Solid(font_, ch, textColor_);
+        if (!surface)
+        {
+            std::cerr << "TTF_RenderGlyph_Solid failed: " << TTF_GetError() << std::endl;
+            continue;
+        }
+
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, surface);
+        if (!texture)
+        {
+            std::cerr << "SDL_CreateTextureFromSurface failed: " << SDL_GetError() << std::endl;
+            SDL_FreeSurface(surface);
+            continue;
+        }
+
+        SDL_Rect destRect = { x + xOffset, y, surface->w, surface->h };
+        SDL_RenderCopy(renderer_, texture, NULL, &destRect);
+
+        xOffset += surface->w;
+
+        SDL_DestroyTexture(texture);
+        SDL_FreeSurface(surface);
+    }
+}
+
+void Text::RenderDebugText(std::string&& text, int x, int y)
+{
+    int xOffset = 0;
+    for (char ch : text)
+    {
+        SDL_Surface* surface = TTF_RenderGlyph_Solid(font_, ch, textColor_);
+        if (!surface)
+        {
+            std::cerr << "TTF_RenderGlyph_Solid failed: " << TTF_GetError() << std::endl;
+            continue;
+        }
+
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, surface);
+        if (!texture)
+        {
+            std::cerr << "SDL_CreateTextureFromSurface failed: " << SDL_GetError() << std::endl;
+            SDL_FreeSurface(surface);
+            continue;
+        }
+
+        SDL_Rect destRect = { x + xOffset, y, surface->w, surface->h };
+        SDL_RenderCopy(renderer_, texture, NULL, &destRect);
+
+        xOffset += surface->w;
+
+        SDL_DestroyTexture(texture);
+        SDL_FreeSurface(surface);
+    }
+}

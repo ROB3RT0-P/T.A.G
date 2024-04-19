@@ -36,7 +36,7 @@ class Game :
 	public IProcess
 {
 public:
-	Game() : quit(false), playerEntity() {}
+	Game() : quit_(false), playerEntity() {}
 
 	bool initialize(int ScreenWidth, int ScreenHeight);
 	void tickLogic(float deltaTime);
@@ -57,10 +57,10 @@ private:
 
 	virtual void onLoadComplete(LoadingProcess::LoadRequest* loadedResources, size_t count);
 
-	int SCREEN_WIDTH = 0;
-	int SCREEN_HEIGHT = 0;
-	float fScreenWidth;
-	float fScreenHeight;
+	int SCREEN_WIDTH_ = 0;
+	int SCREEN_HEIGHT_ = 0;
+	float fScreenWidth_;
+	float fScreenHeight_;
 
 	LoadingProcess loadingProcess;
 
@@ -70,11 +70,16 @@ private:
 	SDL_Renderer* gRenderer = NULL;
 	SDL_Texture* gTexture = NULL;
 
-	// RJP - These variables need renaming.
 	TTF_Font* font;
 	Text* debugText;
+	Text* gameText;
 	Text* consoleText;
-	SDL_Texture* playerTexture;
+
+	SDL_Texture* playerTexture_;
+	SDL_Texture* backgroundTexture_;
+	SDL_Texture* mainMenuTexture_;
+	SDL_Texture* gameOverTexture_;
+
 	AudioPlayer* audio;
 	Controls* controls;
 	ParallaxBackground* background;
@@ -84,25 +89,27 @@ private:
 	Utils* utils;
 	Console* console;
 
-	bool quit;
-	bool bStateSwitch;
-	int scrollSpeed = 1;
-	int prevTime;
-	int gameTime = 0;
-	int debugTextSize;
-	int debugTextSizeInGame;
-	int iInputReturn;
+	bool quit_;
+	bool bMusicPlaying_;
+	bool bStateSwitch_;
+	int scrollSpeed_ = 1;
+	int prevTime_;
+	int gameTime_ = 0;
+	int debugTextSize_;
+	int textSize_;
+	int iInputReturn_;
 
-	char userInput;
+	char userInput_;
 
-	float consoleRenderPosX;
-	float consoleRenderPosY;
+	float consoleRenderPosX_;
+	float consoleRenderPosY_;
 
-	SDL_Color textColor;
-	SDL_Event event;
+	SDL_Color textColor_;
+	SDL_Color debugTextColor_;
+	SDL_Event event_;
 
-	std::string playerScore;
-	std::string playerEntityHealth;
-	std::vector<std::string> imagePaths;
-	std::vector<std::string> titleImagePaths;
+	std::string playerScore_;
+	std::string playerEntityHealth_;
+	std::vector<std::string> imagePaths_;
+	std::vector<std::string> titleImagePaths_;
 };

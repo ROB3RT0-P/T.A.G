@@ -60,15 +60,18 @@ namespace // hidden namespace
 
 	ResourceManager::ResourceDBEntry resourceDatabase[] =
 	{
-		{ raw_enum(Res::Default),			"Data/texture.png",							ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::Default),			"Data/textures/texture.png",				ResourceManager::ResourceType::Texture },
 		{ raw_enum(Res::PlayerSprite),		"kenney/Ships/ship_0001.png",				ResourceManager::ResourceType::Texture },
 		{ raw_enum(Res::EnemySprite),		"kenney/Ships/ship_0002.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::MainMenuSprite),	"Data/textures/main_menu.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::BackgroundSprite),	"Data/textures/pathway.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::GameOverSprite),	"Data/textures/game_over.png",				ResourceManager::ResourceType::Texture },
 	};
 }
 	Game* game() { return GameInstance; }
-	ProcessManager* processManager() { return ProcessManagerInstance; }
-	EntityManager* entityManager() { return EntityManagerInstance; }
-	ResourceManager* resourceManager() { return ResourceManagerInstance; }
+	ProcessManager* processManager()	{ return ProcessManagerInstance; }
+	EntityManager* entityManager()		{ return EntityManagerInstance; }
+	ResourceManager* resourceManager()	{ return ResourceManagerInstance; }
 }
 
 int main( int argc, char* args[] )

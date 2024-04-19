@@ -5,13 +5,28 @@
 
 #include "renderer.h"
 
-void Renderer::textureRender(SDL_Texture* texture, float x, float y)
+void Renderer::textureRender( SDL_Texture* texture, float x, float y , float scaleX, float scaleY)
 {
-	SDL_Rect dest;
+	if (texture)
+	{
+		SDL_Rect dest;
 
-	dest.x = static_cast<int>(x);
-	dest.y = static_cast<int>(y);
-	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+		dest.x = static_cast<int>(x);
+		dest.y = static_cast<int>(y);
+		SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
-	SDL_RenderCopy(gRenderer, texture, NULL, &dest);
+		dest.w *= scaleX;
+		dest.h *= scaleY;
+
+		SDL_RenderCopy(gRenderer, texture, NULL, &dest);
+	}
+	else 
+	{
+		SDL_Log("Failed to create texture: %s", SDL_GetError());
+	}
+}
+
+void Renderer::fadeInOut(SDL_Renderer* renderer, int duration, bool fadeIn, float screenWidth, float screenHeight) 
+{
+
 }

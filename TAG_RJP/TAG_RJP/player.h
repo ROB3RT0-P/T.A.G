@@ -58,6 +58,9 @@ public:
 	void setPlayerVelocityY(float fNewVelocityY) { fPlayerVelocityY_ = fNewVelocityY; }
 	void setPlayerAcceleration( float fNewAcceleration) { }
 
+	Uint32 getPlayerTurnsRemaining() { return uTurnsRemaining; }
+	void decrementPlayerTurnsRemaining() { --uTurnsRemaining; }
+
 private:
 	float fPlayerVelocityX_;
 	float fPlayerVelocityY_;
@@ -82,4 +85,6 @@ private:
 	int loadHighScore();
 
 	SDL_Texture* tTexture = NULL;
+
+	Uint32 uTurnsRemaining;
 };

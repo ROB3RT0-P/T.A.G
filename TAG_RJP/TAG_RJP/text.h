@@ -17,6 +17,8 @@ public:
     ~Text();
 
     void RenderConsoleText(std::string&& text, int x, int y);
+    void RenderGameText(std::string&& text, int x, int y);
+    void RenderDebugText(std::string&& text, int x, int y);
 
 private:
     SDL_Renderer* renderer_;
