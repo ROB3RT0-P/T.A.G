@@ -79,6 +79,9 @@ private:
 	SDL_Texture* backgroundTexture_;
 	SDL_Texture* mainMenuTexture_;
 	SDL_Texture* gameOverTexture_;
+	SDL_Texture* deadEndTexture_;
+	SDL_Texture* continueTexture_;
+	SDL_Texture* escapeTexture_;
 
 	AudioPlayer* audio;
 	Controls* controls;
@@ -112,4 +115,8 @@ private:
 	std::string playerEntityHealth_;
 	std::vector<std::string> imagePaths_;
 	std::vector<std::string> titleImagePaths_;
+
+	Uint32 uInitialTime;
+	Uint32 uCurrentTime;
+	Uint32 uStateTimer;
 };

@@ -30,26 +30,16 @@ void Player::registerWithEntityManager()
 	global::entityManager()->registerEntityCreator(raw_enum(global::EntityType::Player), playerEntityCreateFunc, playerEntityDestroyFunc, NULL);
 }
 
-void Player::init(float fScreenWidth, float fScreenHeight)
+void Player::init()
 {
-	// RJP - Most of this is deprecated.
     tTexture = nullptr;
-	fPlayerY_ = 100; // RJP - default starting point
-	fPlayerX_ = 100; // RJP - default starting point
 	fPlayerAcceleration_ = 500.0f;
 	fPlayerVelocityX_ = 0;
 	fPlayerVelocityY_ = 0;
 	fPlayerSpeed_ = 500.0f;
 	iPlayerHealth_ = 0;
-	fBoundOffset_ = 40.0f;
-	fPlayerFloatSpeedX_ = rand() % (5 - 2) * 0.1f;
-	fPlayerFloatSpeedY_ = rand() % (5 - 2) * 0.1f;
 
-	setPlayerHealth(100);
-	setPlayerX(fScreenWidth * 0.5f);
-	setPlayerY(fScreenHeight * 0.7f);
-
-	uTurnsRemaining = 5;
+	uTurnsRemaining_ = 5;
 }
 
 void Player::update(float deltaTime)

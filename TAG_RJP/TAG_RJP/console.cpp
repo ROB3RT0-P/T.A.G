@@ -12,11 +12,13 @@ bool Console::initConsole()
 	consoleOutput = "";
 	inputCheckL = "left";
 	inputCheckR = "right";
+	iRandChoice = rand();
 
 #ifdef _DEBUG
 	inputCheckDie = "die";
 	inputCheckWin = "win";
 #endif
+
 
 	return true;
 }
@@ -57,29 +59,16 @@ int Console::manageInput(char userInput)
 
 void Console::updateGame()
 {
-	/*
-	if (consoleOutput == "left" || "LEFT" || "l" || "L")
-	{
-		player_->decrementPlayerTurnsRemaining();
-		if (checkPlayerState()) stateMachine_->setState(GameState::GAMEOVER);
-	}
-	else if (consoleOutput == "right" || "RIGHT" || "r" || "R")
-	{
-		player_->decrementPlayerTurnsRemaining();
-		if ( checkPlayerState() ) stateMachine_->setState(GameState::GAMEOVER);
-	}
-	*/
-
 	if (consoleOutput == inputCheckL )
 	{
-		// RJP - TODO - Check if input was correct.
 		player_->decrementPlayerTurnsRemaining();
+		checkChoice() ? stateMachine_->setState(GameState::CONTINUE) : stateMachine_->setState(GameState::DEADEND);
 		if (checkPlayerState()) stateMachine_->setState(GameState::GAMEOVER);
 	}
 	else if (consoleOutput == inputCheckR )
-	{
-		// RJP - TODO - Check if input was correct.
+	{	
 		player_->decrementPlayerTurnsRemaining();
+		checkChoice() ? stateMachine_->setState(GameState::CONTINUE) : stateMachine_->setState(GameState::DEADEND);
 		if ( checkPlayerState() ) stateMachine_->setState(GameState::GAMEOVER);
 	}
 	
@@ -104,7 +93,19 @@ bool Console::checkPlayerState()
 {
 	if (player_->getPlayerTurnsRemaining() < 1)
 	{
-		return true;
+		return true; // RJP - Player is dead.
 	}
 	return false;
+}
+
+bool Console::checkChoice()
+{
+	iRandChoice = rand();
+
+	if (iRandChoice % 2 == 0) {
+		return true; // RJP - Number is even.
+	}
+	else {
+		return false; // RJP - Number is even.
+	}
 }

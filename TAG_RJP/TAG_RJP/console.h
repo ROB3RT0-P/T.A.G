@@ -20,6 +20,7 @@ public:
 	int manageInput(char userInput);
 	void updateGame();
 	bool checkPlayerState();
+	bool checkChoice();
 
 	std::string getPrevConsoleOutput() { return prevConsoleOutput; }
 	std::string getConsoleOutput() { return consoleOutput; }
@@ -32,6 +33,8 @@ private:
 	std::string consoleOutput;
 	std::string inputCheckL;
 	std::string inputCheckR;
+
+	int iRandChoice;
 
 #ifdef _DEBUG
 	std::string inputCheckDie;

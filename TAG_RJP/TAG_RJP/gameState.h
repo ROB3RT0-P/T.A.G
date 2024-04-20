@@ -10,6 +10,10 @@ enum class GameState {
     PLAY,
     PAUSE,
     GAMEOVER,
+    DEADEND,
+    CONTINUE,
+    INTRO,
+    ESCAPE,
 };
 
 class StateMachine {

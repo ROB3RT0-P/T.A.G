@@ -24,6 +24,7 @@ public:
 	Player(float x, float y);
 
 	void init(float fScreenWidth, float fScreenHeight);
+	void init();
 	void render();
 	void update(float deltaTime);
 	void move(float newX, float newY, float deltaTime);
@@ -58,8 +59,8 @@ public:
 	void setPlayerVelocityY(float fNewVelocityY) { fPlayerVelocityY_ = fNewVelocityY; }
 	void setPlayerAcceleration( float fNewAcceleration) { }
 
-	Uint32 getPlayerTurnsRemaining() { return uTurnsRemaining; }
-	void decrementPlayerTurnsRemaining() { --uTurnsRemaining; }
+	Uint32 getPlayerTurnsRemaining() { return uTurnsRemaining_; }
+	void decrementPlayerTurnsRemaining() { --uTurnsRemaining_; }
 
 private:
 	float fPlayerVelocityX_;
@@ -86,5 +87,6 @@ private:
 
 	SDL_Texture* tTexture = NULL;
 
-	Uint32 uTurnsRemaining;
+	Uint32 uTurnsRemaining_ = 10;
+	Uint32 uCorrectChoice_ = 0;
 };

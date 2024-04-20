@@ -28,12 +28,19 @@
 /*********************************************************************************
 	RJP - TODO: 
 		Priority:
-				- Console
-				- Render user input
-				- Render background
+				- Add exact sizes for rendering textures.
+				- Sound effects
+				- 
 				- 
 		Non-Priority:
-				-
+				- Level Manager - Encapsulate rendering and logic.
+				- Resource Manager - Implemented but not fully utilised.
+				- Entity Manager - Implemented but not fully utilised.
+				- Multiple line console - Useful but not necessary at the moment.
+				- Inventory
+				- Difficulty Selector
+				- Screen fade
+
 *********************************************************************************/
 
 #include "global.h"
@@ -61,8 +68,8 @@ namespace // hidden namespace
 	ResourceManager::ResourceDBEntry resourceDatabase[] =
 	{
 		{ raw_enum(Res::Default),			"Data/textures/texture.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::PlayerSprite),		"kenney/Ships/ship_0001.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::EnemySprite),		"kenney/Ships/ship_0002.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::PlayerSprite),		"kenney/Ships/.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::EnemySprite),		"kenney/Ships/.png",				ResourceManager::ResourceType::Texture },
 		{ raw_enum(Res::MainMenuSprite),	"Data/textures/main_menu.png",				ResourceManager::ResourceType::Texture },
 		{ raw_enum(Res::BackgroundSprite),	"Data/textures/pathway.png",				ResourceManager::ResourceType::Texture },
 		{ raw_enum(Res::GameOverSprite),	"Data/textures/game_over.png",				ResourceManager::ResourceType::Texture },
