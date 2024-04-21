@@ -26,7 +26,7 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 		}
 
 		// RJP - Create window
-		gWindow = SDL_CreateWindow("Text Adventure Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH_, SCREEN_HEIGHT_, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Peril's Passage", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH_, SCREEN_HEIGHT_, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -58,7 +58,6 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 			}
 		}
 	}
-
 	return success && loadInitialResources();
 }
 
@@ -70,11 +69,29 @@ bool Game::loadInitialResources()
 	loadingProcess.dataToLoad.push_back(toLoad);
 	toLoad.resource = global::Res::PlayerSprite;
 	loadingProcess.dataToLoad.push_back(toLoad);
+	toLoad.resource = global::Res::MainMenuSprite;
+	loadingProcess.dataToLoad.push_back(toLoad);
+	toLoad.resource = global::Res::BackgroundSprite;
+	loadingProcess.dataToLoad.push_back(toLoad);
+	toLoad.resource = global::Res::GameOverSprite;
+	loadingProcess.dataToLoad.push_back(toLoad);
+	toLoad.resource = global::Res::DeadEndSprite;
+	loadingProcess.dataToLoad.push_back(toLoad);
+	toLoad.resource = global::Res::ContinueSprite;
+	loadingProcess.dataToLoad.push_back(toLoad);
 
 	global::processManager()->registerProcess(&loadingProcess, raw_enum(global::TaskID::Loading), raw_enum(global::TickOrder::DontCare), raw_enum(global::RenderOrder::DontCare));
-	playerTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::PlayerSprite));
-	backgroundTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::BackgroundSprite));
 
+	playerTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::PlayerSprite));
+	mainMenuTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::MainMenuSprite));
+	backgroundTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::BackgroundSprite));
+	gameOverTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::GameOverSprite));
+	deadEndTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::DeadEndSprite));
+	continueTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::ContinueSprite));
+	escapeTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::EscapeSprite));
+
+	playerEntity = static_cast<Player*>(global::entityManager()->createEntity(raw_enum(global::EntityType::Player)));
+	
 	// RJP - Temporary texture loading - This is to be moved over to the Resource Manager.
 	SDL_Surface* surface = IMG_Load("Data/textures/main_menu.png");
 	mainMenuTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
@@ -100,8 +117,8 @@ bool Game::loadInitialResources()
 	escapeTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
 	SDL_FreeSurface(surface);
 
-	//playerEntity = static_cast<Player*>(global::entityManager()->createEntity(raw_enum(global::EntityType::Player)));
-	playerEntity = new Player(); // RJP - For testing demo. To be added to Entity Manager later.
+	// RJP - For testing demo. To be added to Entity Manager later.
+	playerEntity = new Player(); 
 	playerEntity->init();
 
 	stateMachine = new StateMachine();
@@ -126,7 +143,7 @@ bool Game::loadInitialResources()
 	bStateSwitch_ = false;
 	uCurrentTime_ = 0;
 	uInitialTime_ = 0;
-	uStateTimer_ = 4000;
+	uStateTimer_ = 3000;
 
 	fScreenWidth_ = static_cast<float>(SCREEN_WIDTH_);
 	fScreenHeight_ = static_cast<float>(SCREEN_HEIGHT_);
@@ -171,8 +188,7 @@ void Game::tickLogic( float deltaTime )
 
 			if (playerEntity->getPlayerTurnsRemaining() < 1)
 			{
-				audio->stop();
-				bMusicPlaying_ = false;
+				
 			}
 
 			break;
@@ -263,21 +279,20 @@ void Game::render(const Info& info)
 		gameText->RenderGameText(console->getPrevConsoleOutput(), static_cast<int>(fConsoleRenderPosX_), static_cast<int>(fConsoleRenderPosY_ - 30 ) );
 		consoleText->RenderConsoleText(console->getConsoleOutput(), static_cast<int>(fConsoleRenderPosX_), static_cast<int>(fConsoleRenderPosY_));
 		// RJP - Delay + parallax background zoom after entering correct input.
-
 		break;
+
 	case GameState::PAUSE:
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
-#ifdef _DEBUG
-		debugText->RenderConsoleText("PAUSE_MENU", 10, 10);
-#endif
-
 		gameText->RenderConsoleText("Input - [ A ] ~ [ Z ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.4f));
 		gameText->RenderConsoleText("Confirm - [ RETURN ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.5f));
 		gameText->RenderConsoleText("Pause / Unpause - [ TAB ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.6f));
 		gameText->RenderConsoleText("Quit - [ ESC ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.7f));
 		gameText->RenderConsoleText("Make your way to the exit before your luck runs out...", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.8f));
-
+#ifdef _DEBUG
+		debugText->RenderConsoleText("PAUSE_MENU", 10, 10);
+#endif
 		break;
+
 	case GameState::GAMEOVER:
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		textureRenderer->textureRender(gameOverTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, 1.35f, 1.45f);
@@ -315,7 +330,8 @@ void Game::render(const Info& info)
 	case GameState::ESCAPE:
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		textureRenderer->textureRender(escapeTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, 0.85f, 0.65f);
-		gameText->RenderGameText("Fate hath spared thee for another day...", static_cast<int>(fScreenWidth_ * 0.25f), static_cast<int>(fScreenHeight_ * 0.85f));
+		gameText->RenderGameText("Fate hath spared thee for another day...", static_cast<int>(fScreenWidth_ * 0.25f),
+			static_cast<int>(fScreenHeight_ * 0.85f));
 #ifdef _DEBUG
 		debugText->RenderDebugText("ESCAPE", 10, 10);
 #endif
@@ -360,6 +376,12 @@ bool Game::handleEvents(float deltaTime)
 			}
 
 			if (console->manageInput(cUserInput_)) return 1;
+
+			if (console->checkPlayerState())
+			{
+				audio->stop();
+				bMusicPlaying_ = false;
+			}
 
 #ifdef _DEBUG
 			if (console->getPrevConsoleOutput() == "die")
@@ -417,6 +439,12 @@ bool Game::handleEvents(float deltaTime)
 			break;
 
 		case GameState::ESCAPE:
+	
+			while (SDL_PollEvent(&event_) != 0)
+			{
+				cUserInput_ = controls->handleInput(event_);
+			}
+			if (console->manageInput(cUserInput_)) return 1;
 
 			break;
 		}

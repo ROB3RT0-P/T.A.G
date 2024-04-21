@@ -37,7 +37,7 @@ class Game :
 	public IProcess
 {
 public:
-	Game() : quit_(false), playerEntity() {}
+	Game() : bQuit_(false), playerEntity() {}
 
 	bool initialize(int ScreenWidth, int ScreenHeight);
 	void tickLogic(float deltaTime);
@@ -102,8 +102,8 @@ private:
 	Uint32 uCurrentTime_;
 	Uint32 uStateTimer_;
 
-	int SCREEN_WIDTH_ = 0;
-	int SCREEN_HEIGHT_ = 0;
+	int SCREEN_WIDTH_;
+	int SCREEN_HEIGHT_;
 	int scrollSpeed_ = 1;
 	int prevTime_;
 	int gameTime_ = 0;

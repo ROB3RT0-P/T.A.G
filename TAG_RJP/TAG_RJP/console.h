@@ -13,14 +13,14 @@
 class Console
 {
 public:
-	Console( StateMachine &stateMachine, Player &player ) : stateMachine_(&stateMachine), player_(&player) {};
+	Console(StateMachine &stateMachine, Player &player) : stateMachine_(&stateMachine), player_(&player) {};
 	~Console();
 
 	bool initConsole();
 	int manageInput(char userInput);
 	void updateGame();
 	bool checkPlayerState();
-	bool checkChoice();
+	void checkChoice();
 
 	std::string getPrevConsoleOutput() { return sPrevConsoleOutput; }
 	std::string getConsoleOutput() { return sConsoleOutput; }
@@ -34,6 +34,7 @@ private:
 
 	int iMaxConsoleLen;
 	int iRandChoice;
+	Uint32 iEscapeNum;
 
 	std::string sConsoleOutput;
 	std::string sInputCheckL;

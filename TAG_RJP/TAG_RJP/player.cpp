@@ -39,7 +39,8 @@ void Player::init()
 	fPlayerVelocityY_ = 0;
 	fPlayerSpeed_ = 500.0f;
 	iPlayerHealth_ = 0;
-	uTurnsRemaining_ = 5;
+	uTurnsRemaining_ = 10;
+	uCorrectTurns_ = 0;
 }
 
 void Player::update(float deltaTime)
@@ -71,10 +72,6 @@ void Player::move(float newX, float newY, float deltaTime)
 
 void Player::floatPlayer()
 {
-	/*
-	fPlayerX_ += rand() % (5 - 2) * 0.01f;
-	fPlayerY_ += rand() % (5 - 2) * 0.01f;
-	*/
 	fPlayerX_ += fPlayerFloatSpeedX_ * 0.5f;
 	fPlayerY_ += fPlayerFloatSpeedY_;
 

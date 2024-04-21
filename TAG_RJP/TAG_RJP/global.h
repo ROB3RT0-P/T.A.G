@@ -28,10 +28,14 @@ namespace global
 
 	enum class TickOrder : uint32_t {
 		DontCare = 0,
+		First = 1,
+		Second = 2,
 	};
 
 	enum class RenderOrder : uint32_t {
 		DontCare = 0,
+		First = 1,
+		Second = 2,
 	};
 
 	enum class Res : uint32_t {
@@ -41,6 +45,9 @@ namespace global
 		MainMenuSprite,
 		BackgroundSprite,
 		GameOverSprite,
+		DeadEndSprite,
+		ContinueSprite,
+		EscapeSprite,
 
 		Max = 256
 	};
@@ -48,6 +55,7 @@ namespace global
 	enum class EntityType : uint32_t {
 		Unknown = 0,
 		Player,
+		Enemy,
 	};
 
 }

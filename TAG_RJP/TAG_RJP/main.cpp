@@ -67,12 +67,16 @@ namespace // hidden namespace
 
 	ResourceManager::ResourceDBEntry resourceDatabase[] =
 	{
-		{ raw_enum(Res::Default),			"Data/textures/texture.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::PlayerSprite),		"kenney/Ships/.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::EnemySprite),		"kenney/Ships/.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::MainMenuSprite),	"Data/textures/main_menu.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::BackgroundSprite),	"Data/textures/pathway.png",				ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::GameOverSprite),	"Data/textures/game_over.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::Default),			"Data/textures/texture.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::PlayerSprite),		"kenney/Ships/.png",			ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::EnemySprite),		"kenney/Ships/.png",			ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::MainMenuSprite),	"Data/textures/main_menu.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::BackgroundSprite),	"Data/textures/pathway.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::GameOverSprite),	"Data/textures/game_over.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::ContinueSprite),	"Data/textures/continue.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::DeadEndSprite),		"Data/textures/dead_end.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::ContinueSprite),	"Data/textures/continue.png",	ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::EscapeSprite),		"Data/textures/escape.png",		ResourceManager::ResourceType::Texture },
 	};
 }
 	Game* game() { return GameInstance; }

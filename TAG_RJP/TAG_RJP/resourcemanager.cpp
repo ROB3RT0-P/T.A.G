@@ -62,6 +62,24 @@ bool ResourceManager::unloadResource(ResourceID resID)
 	if (resID >= resources.size()) return false;
 	if (resources[resID].type == ResourceType::Unknown) return false;
 
-	// TODO:
+	if (resources[resID].refCount > 0) {
+		--resources[resID].refCount;
+		if (resources[resID].refCount == 0) {
+			switch (resources[resID].type) {
+			case ResourceType::Texture: {
+				// RJP - Free the texture.
+				if (resources[resID].rTexture != nullptr) {
+					SDL_DestroyTexture(resources[resID].rTexture);
+					resources[resID].rTexture = nullptr;
+				}
+			} break;
+			case ResourceType::Binary: {
+				// RJP - Free binary resources to go here.
+			} break;
+			default: break;
+			}
+		}
+		return true;
+	}
 	return false;
 }

@@ -60,7 +60,10 @@ public:
 	void setPlayerAcceleration( float fNewAcceleration) { }
 
 	Uint32 getPlayerTurnsRemaining() { return uTurnsRemaining_; }
+	Uint32 getPlayerCorrectTurns() { return uCorrectTurns_;  }
+
 	void decrementPlayerTurnsRemaining() { --uTurnsRemaining_; }
+	void incrementPlayerCorrectTurns() { ++uCorrectTurns_; }
 
 private:
 	float fPlayerVelocityX_;
@@ -87,6 +90,6 @@ private:
 
 	SDL_Texture* tTexture = NULL;
 
-	Uint32 uTurnsRemaining_ = 10;
-	Uint32 uCorrectChoice_ = 0;
+	Uint32 uTurnsRemaining_;
+	Uint32 uCorrectTurns_;
 };

@@ -20,13 +20,8 @@ class StateMachine {
 public:
     StateMachine() : gsCurrentState(GameState::MENU) {}
 
-    void setState(GameState newState) {
-        gsCurrentState = newState;
-    }
-
-    GameState getState() const {
-        return gsCurrentState;
-    }
+    inline void setState(GameState newState) { gsCurrentState = newState; }
+    inline GameState getState() const { return gsCurrentState; }
 
 private:
     GameState gsCurrentState;

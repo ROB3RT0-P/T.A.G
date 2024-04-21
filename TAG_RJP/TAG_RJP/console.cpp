@@ -14,6 +14,7 @@ bool Console::initConsole()
 	sInputCheckL = "left";
 	sInputCheckR = "right";
 	iRandChoice = rand();
+	iEscapeNum = 8;
 
 #ifdef _DEBUG
 	sInputCheckDie = "die";
@@ -60,17 +61,10 @@ int Console::manageInput(char userInput)
 
 void Console::updateGame()
 {
-	if (sConsoleOutput == sInputCheckL )
+	if (sConsoleOutput == sInputCheckL || sConsoleOutput == sInputCheckR )
 	{
-		player_->decrementPlayerTurnsRemaining();
-		checkChoice() ? stateMachine_->setState(GameState::CONTINUE) : stateMachine_->setState(GameState::DEADEND);
-		if (checkPlayerState()) stateMachine_->setState(GameState::GAMEOVER);
-	}
-	else if (sConsoleOutput == sInputCheckR )
-	{	
-		player_->decrementPlayerTurnsRemaining();
-		checkChoice() ? stateMachine_->setState(GameState::CONTINUE) : stateMachine_->setState(GameState::DEADEND);
-		if ( checkPlayerState() ) stateMachine_->setState(GameState::GAMEOVER);
+		checkChoice();
+		checkPlayerState();
 	}
 	
 #ifdef _DEBUG
@@ -80,33 +74,44 @@ void Console::updateGame()
 	}
 	else if (sConsoleOutput == sInputCheckWin)
 	{
-		stateMachine_->setState(GameState::MENU);
+		stateMachine_->setState(GameState::ESCAPE);
 	}
 #endif
 
 	else
 	{
+		// RJP - Do nothing.
 		// RJP - TODO - Print "incorrect command".
 	}
 }
 
 bool Console::checkPlayerState()
 {
+	if (player_->getPlayerCorrectTurns() >= iEscapeNum)
+	{
+		stateMachine_->setState(GameState::ESCAPE);
+		return true;
+	}
 	if (player_->getPlayerTurnsRemaining() < 1)
 	{
-		return true; // RJP - Player is dead.
+		stateMachine_->setState(GameState::GAMEOVER);
+		return true;
 	}
 	return false;
 }
 
-bool Console::checkChoice()
+void Console::checkChoice()
 {
 	iRandChoice = rand();
+	player_->decrementPlayerTurnsRemaining();
 
-	if (iRandChoice % 2 == 0) {
-		return true; // RJP - Number is even.
+	if (iRandChoice % 2 == 0) 
+	{
+		player_->incrementPlayerCorrectTurns();
+		stateMachine_->setState(GameState::CONTINUE);
 	}
-	else {
-		return false; // RJP - Number is odd.
+	else 
+	{
+		stateMachine_->setState(GameState::DEADEND);
 	}
 }
