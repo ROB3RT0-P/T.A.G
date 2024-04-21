@@ -39,21 +39,24 @@ private:
 
 	friend class EntityManager;
 
-	void insertAfter(IEntity* other) {
+	void insertAfter(IEntity* other) 
+	{
 		remove();
 		listPrev = other;
 		listNext = other->listNext;
 		listPrev->listNext = this;
 		listNext->listPrev = this;
 	}
-	void insertBefore(IEntity* other) {
+	void insertBefore(IEntity* other) 
+	{
 		remove();
 		listNext = other;
 		listPrev = other->listPrev;
 		listPrev->listNext = this;
 		listNext->listPrev = this;
 	}
-	void remove() {
+	void remove() 
+	{
 		IEntity* p = listPrev;
 		IEntity* n = listNext;
 		listNext->listPrev = p;

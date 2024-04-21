@@ -22,28 +22,30 @@ public:
 	bool checkPlayerState();
 	bool checkChoice();
 
-	std::string getPrevConsoleOutput() { return prevConsoleOutput; }
-	std::string getConsoleOutput() { return consoleOutput; }
+	std::string getPrevConsoleOutput() { return sPrevConsoleOutput; }
+	std::string getConsoleOutput() { return sConsoleOutput; }
 
 protected:
 
 private:
-	char userInput;
-	int maxConsoleLen;
-	std::string consoleOutput;
-	std::string inputCheckL;
-	std::string inputCheckR;
-
-	int iRandChoice;
-
-#ifdef _DEBUG
-	std::string inputCheckDie;
-	std::string inputCheckWin;
-#endif
-
-	std::string prevConsoleOutput;
 	Utils* utils;
-
 	Player* player_;
 	StateMachine* stateMachine_;
+
+	int iMaxConsoleLen;
+	int iRandChoice;
+
+	std::string sConsoleOutput;
+	std::string sInputCheckL;
+	std::string sInputCheckR;
+	std::string sPrevConsoleOutput;
+
+#ifdef _DEBUG
+	std::string sInputCheckDie;
+	std::string sInputCheckWin;
+#endif
 };
+	
+
+
+	

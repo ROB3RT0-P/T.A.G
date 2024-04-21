@@ -12,7 +12,8 @@ EntityManager::EntityManager()
 
 }
 
-void EntityManager::registerEntityCreator(uint32_t type, entityCreateFunc* create, entityDestroyFunc* destroy, void* user) {
+void EntityManager::registerEntityCreator(uint32_t type, entityCreateFunc* create, entityDestroyFunc* destroy, void* user) 
+{
 	EntityFactoryData factoryData;
 	factoryData.createFunc = create;
 	factoryData.destroyFunc = destroy;
@@ -20,13 +21,15 @@ void EntityManager::registerEntityCreator(uint32_t type, entityCreateFunc* creat
 	factoryMap[type] = factoryData;
 }
 
-IEntity* EntityManager::createEntity(uint32_t type) {
+IEntity* EntityManager::createEntity(uint32_t type) 
+{
 	EntityFactorMap::iterator itr = factoryMap.find(type);
 	if (itr == factoryMap.end()) return NULL;
 	IEntity* newEntity = itr->second.createFunc(itr->second.user);
 	newEntity->id = nextEntityID++;
 	newEntity->type = type;
-	if (firstEntity == NULL) {
+	if (firstEntity == NULL) 
+	{
 		firstEntity = newEntity;
 	} else {
 		newEntity->insertBefore(firstEntity);
@@ -34,9 +37,11 @@ IEntity* EntityManager::createEntity(uint32_t type) {
 	return newEntity;
 }
 
-void EntityManager::destroyEntity(IEntity* entity) {
+void EntityManager::destroyEntity(IEntity* entity) 
+{
 	EntityFactorMap::iterator itr = factoryMap.find(entity->type);
-	if (entity == firstEntity) {
+	if (entity == firstEntity) 
+	{
 		firstEntity = firstEntity->nextEntity();
 		if (entity == firstEntity) firstEntity = NULL;
 	}

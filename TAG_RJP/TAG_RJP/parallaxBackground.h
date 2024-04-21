@@ -16,6 +16,7 @@ public:
     ~ParallaxBackground();
 
     void scroll(int scrollSpeed);
+    void zoom(int zoomSpeed, bool zoomInOut);
     void randMovement(int speed);
     void titleRender();
     void render();
@@ -23,9 +24,9 @@ public:
 private:
     SDL_Renderer* renderer;
     std::vector<SDL_Texture*> layers;
-    int scrollSpeed;
-    int totalHeight;
-    int yOffset;
 
-    int screenHeight = 480;
+    int iScrollSpeed_;
+    int iTotalHeight_;
+    int iYOffset_;
+    int iScreenHeight_;
 };

@@ -8,17 +8,17 @@
 bool Console::initConsole() 
 {
 	utils = new Utils();
-	maxConsoleLen = 48;
-	consoleOutput = "";
-	inputCheckL = "left";
-	inputCheckR = "right";
+
+	iMaxConsoleLen = 48;
+	sConsoleOutput = "";
+	sInputCheckL = "left";
+	sInputCheckR = "right";
 	iRandChoice = rand();
 
 #ifdef _DEBUG
-	inputCheckDie = "die";
-	inputCheckWin = "win";
+	sInputCheckDie = "die";
+	sInputCheckWin = "win";
 #endif
-
 
 	return true;
 }
@@ -27,16 +27,16 @@ int Console::manageInput(char userInput)
 {
 	if ( userInput != '\0' )
 	{
-		if ( userInput == '\b' && !consoleOutput.empty() )
+		if ( userInput == '\b' && !sConsoleOutput.empty() )
 		{
-			consoleOutput.pop_back(); // RJP - Backspace - Remove last letter.
+			sConsoleOutput.pop_back(); // RJP - Backspace - Remove last letter.
 			return 0;
 		}
 		else if ( userInput == '\r' )
 		{
 			updateGame();
-			prevConsoleOutput = consoleOutput;
-			consoleOutput.clear(); // RJP - Enter - Reset console value after pressing enter.
+			sPrevConsoleOutput = sConsoleOutput;
+			sConsoleOutput.clear(); // RJP - Enter - Reset console value after pressing enter.
 			return 0;
 		}
 		else if ( userInput == '\t' ) 
@@ -48,24 +48,25 @@ int Console::manageInput(char userInput)
 			// RJP - Do nothing. // RJP - Tab - Change state.
 			return 0;
 		}
-		else if ( utils->stringLen(consoleOutput) < maxConsoleLen )
+		else if ( utils->stringLen(sConsoleOutput) < iMaxConsoleLen )
 		{
-			consoleOutput += userInput;
+			sConsoleOutput += userInput;
 			return 0;
 		}
 		return 0;
 	}
+	return 0;
 }
 
 void Console::updateGame()
 {
-	if (consoleOutput == inputCheckL )
+	if (sConsoleOutput == sInputCheckL )
 	{
 		player_->decrementPlayerTurnsRemaining();
 		checkChoice() ? stateMachine_->setState(GameState::CONTINUE) : stateMachine_->setState(GameState::DEADEND);
 		if (checkPlayerState()) stateMachine_->setState(GameState::GAMEOVER);
 	}
-	else if (consoleOutput == inputCheckR )
+	else if (sConsoleOutput == sInputCheckR )
 	{	
 		player_->decrementPlayerTurnsRemaining();
 		checkChoice() ? stateMachine_->setState(GameState::CONTINUE) : stateMachine_->setState(GameState::DEADEND);
@@ -73,11 +74,11 @@ void Console::updateGame()
 	}
 	
 #ifdef _DEBUG
-	else if (consoleOutput == "die")
+	else if (sConsoleOutput == sInputCheckDie)
 	{
 		stateMachine_->setState(GameState::GAMEOVER);
 	}
-	else if (consoleOutput == "win")
+	else if (sConsoleOutput == sInputCheckWin)
 	{
 		stateMachine_->setState(GameState::MENU);
 	}
@@ -106,6 +107,6 @@ bool Console::checkChoice()
 		return true; // RJP - Number is even.
 	}
 	else {
-		return false; // RJP - Number is even.
+		return false; // RJP - Number is odd.
 	}
 }

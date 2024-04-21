@@ -6,7 +6,7 @@
 #include "parallaxBackground.h"
 
 ParallaxBackground::ParallaxBackground(SDL_Renderer* renderer, const std::vector<std::string>& imagePaths, int scrollSpeed)
-    : renderer(renderer), screenHeight(0), yOffset(0), scrollSpeed(0), totalHeight(0)
+    : renderer(renderer), iScreenHeight_(0), iYOffset_(0), iScrollSpeed_(0), iTotalHeight_(0)
 {
     for (const auto& path : imagePaths) {
         SDL_Surface* surface = IMG_Load(path.c_str());
@@ -27,7 +27,7 @@ ParallaxBackground::ParallaxBackground(SDL_Renderer* renderer, const std::vector
         layers.push_back(texture);
         int w, h;
         SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-        totalHeight += h;
+        iTotalHeight_ += h;
     }
 }
 
@@ -38,17 +38,44 @@ ParallaxBackground::~ParallaxBackground()
     }
 }
 
-void ParallaxBackground::scroll(int scrollSpeed) {
-    yOffset += scrollSpeed;
-    if (yOffset > totalHeight) {
-        yOffset = 0;
+void ParallaxBackground::scroll(int scrollSpeed) 
+{
+    iYOffset_ += scrollSpeed;
+    if (iYOffset_ > iTotalHeight_) {
+        iYOffset_ = 0;
+    }
+}
+
+void ParallaxBackground::zoom(int zoomSpeed, bool zoomInOut)
+{
+    float zoomFactor = 1.0f;
+    if (zoomInOut) 
+    {
+        zoomFactor += zoomSpeed * 0.01f;
+    }
+    else 
+    {
+        zoomFactor -= zoomSpeed * 0.01f;
+    }
+
+    for (SDL_Texture* texture : layers) 
+    {
+        int oldWidth, oldHeight;
+        SDL_QueryTexture(texture, nullptr, nullptr, &oldWidth, &oldHeight);
+
+        int newWidth = static_cast<int>(oldWidth * zoomFactor);
+        int newHeight = static_cast<int>(oldHeight * zoomFactor);
+
+        SDL_Rect dstRect = { 0, 0, newWidth, newHeight };
+
+        SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
     }
 }
 
 void ParallaxBackground::titleRender()
 {
     // RJP - To be changed.
-    int y = yOffset;
+    int y = iYOffset_;
     int bC = 1160; // RJP - backgroundCenterer
     for (SDL_Texture* texture : layers) {
         SDL_Rect dstRect = { 0, y, 700, 1000 };
@@ -60,15 +87,15 @@ void ParallaxBackground::titleRender()
 void ParallaxBackground::randMovement(int speed)
 {
     // RJP - To be changed.
-    yOffset += scrollSpeed;
-    if (yOffset > totalHeight) {
-        yOffset = 0;
+    iYOffset_ += iScrollSpeed_;
+    if (iYOffset_ > iTotalHeight_) {
+        iYOffset_ = 0;
     }
 }
 
 void ParallaxBackground::render() 
 {
-    int y = yOffset;
+    int y = iYOffset_;
     int bC = 1160; // RJP - backgroundCenterer
     for (SDL_Texture* texture : layers) {
         SDL_Rect dstRect = { 0, y - bC, 700, 2500 };

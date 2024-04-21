@@ -8,7 +8,8 @@
 
 Player::Player(float x, float y) : fPlayerX_(x), fPlayerY_(y) {};
 
-static IEntity* playerEntityCreateFunc(void* user) {
+static IEntity* playerEntityCreateFunc(void* user) 
+{
 	Player* playerEntity = new Player();
 	// RJP - Should be already loaded but increases the ref count
 	global::resourceManager()->loadResource(raw_enum(global::Res::PlayerSprite));
@@ -38,7 +39,6 @@ void Player::init()
 	fPlayerVelocityY_ = 0;
 	fPlayerSpeed_ = 500.0f;
 	iPlayerHealth_ = 0;
-
 	uTurnsRemaining_ = 5;
 }
 
@@ -95,7 +95,8 @@ void Player::checkBounds()
 	if (fPlayerY_ > (960.0f - fBoundOffset_)) fPlayerY_ = (960.0f - fBoundOffset_);
 }
 
-void Player::render() {
+void Player::render() 
+{
 	tTexture = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::PlayerSprite));
 	//global::game()->blit(tTexture, fPlayerX_, fPlayerY_);
 }

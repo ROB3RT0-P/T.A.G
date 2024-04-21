@@ -8,7 +8,8 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-class AudioPlayer {
+class AudioPlayer 
+{
 public:
     AudioPlayer();
     ~AudioPlayer();

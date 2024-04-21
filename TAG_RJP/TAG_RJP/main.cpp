@@ -30,7 +30,7 @@
 		Priority:
 				- Add exact sizes for rendering textures.
 				- Sound effects
-				- 
+				- Zoom
 				- 
 		Non-Priority:
 				- Level Manager - Encapsulate rendering and logic.

@@ -23,5 +23,4 @@ public:
 
 private:
 	SDL_Renderer* gRenderer = NULL;
-	Uint32 fadeStartTime_;
 };

@@ -18,16 +18,16 @@ enum class GameState {
 
 class StateMachine {
 public:
-    StateMachine() : currentState(GameState::MENU) {}
+    StateMachine() : gsCurrentState(GameState::MENU) {}
 
     void setState(GameState newState) {
-        currentState = newState;
+        gsCurrentState = newState;
     }
 
     GameState getState() const {
-        return currentState;
+        return gsCurrentState;
     }
 
 private:
-    GameState currentState;
+    GameState gsCurrentState;
 };
