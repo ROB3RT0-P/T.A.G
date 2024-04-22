@@ -25,10 +25,10 @@ distribution. <br />
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-Peril's passage is a short demo where the user must input which passage way they want to 
-follow in order to try and escape. My intention was to create a good base game that could be 
-expanded upon in order to make more complex text adventures games. The main components 
-implemented are as follows:
+Peril's passage is a short demo where the user must input which passage way they want to <br />
+follow in order to try and escape. My intention was to create a good base game that could be <br />
+expanded upon in order to make more complex text adventures games. The main components <br />
+implemented are as follows:<br />
 
 - Game loop
 - State machine
@@ -44,35 +44,34 @@ implemented are as follows:
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-TODO: Aspects that I would expand upon given more time.
-- Expand the number of background textures so that they can be loaded at random to create 
-    more environment variety.
-- Add puzzles / Riddles to progress - Stored and retrieved in a data structure and given to 
-    the player at random.
-- Enemies - Can be defeated on a dice roll system.
-- Inventory - Player can pick up items and use them to heal etc...
-- Fade in and out animations to make the transitions more seemless.
-- Add a difficulty setting.
-- 
+TODO: Aspects that I would expand upon given more time.<br />
+- Expand the number of background textures so that they can be loaded at random to create <br />
+    more environment variety.<br />
+- Add puzzles / Riddles to progress - Stored and retrieved in a data structure and given to <br />
+    the player at random.<br />
+- Enemies - Can be defeated on a dice roll system.<br />
+- Inventory - Player can pick up items and use them to heal etc...<br />
+- Fade in and out animations to make the transitions more seemless.<br />
+- Add a difficulty setting.<br />
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-BUILD:
-MSBUILD - VS2022
-Directories for SDL2 are set up for Debug and Release
+BUILD:<br />
+MSBUILD - VS2022<br />
+Directories for SDL2 are set up for Debug and Release<br />
 
-If any issues occur with SDL2, such as missing files etc... SDL2, SDL2_mixer, SDL2_ttf 
-and SDL2_image can be redownloaded and readded to the includes and libraries in the project 
-settings.
+If any issues occur with SDL2, such as missing files etc... SDL2, SDL2_mixer, SDL2_ttf <br />
+and SDL2_image can be redownloaded and readded to the includes and libraries in the project <br />
+settings.<br />
 
-INSTALL:
-N/A
+INSTALL:<br />
+N/A<br />
 
-USAGE:
-Game Controls:  [TAB] - Return
-                [RETURN] - Play, Pause
-                [ESC] - Quit
-                [A]~[Z] - Console input - 'left' / 'right'
+USAGE:<br />
+Game Controls:  [TAB] - Return <br />
+                [RETURN] - Play, Pause <br />
+                [ESC] - Quit <br />
+                [A]~[Z] - Console input - 'left' / 'right' <br />
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
