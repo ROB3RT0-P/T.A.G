@@ -11,7 +11,7 @@ class Controls
 {
 public:
 	Controls() {};
-	char handleInput(SDL_Event& event);
+	static char handleInput(SDL_Event& event);
 
 private:
 };

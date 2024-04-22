@@ -11,7 +11,7 @@ class Utils
 {
 public:
 
-	int stringLen(std::string str)
+	static int stringLen(std::string str)
 	{
         int length = 0;
         for (int i = 0; str[i] != '\0'; ++i) {

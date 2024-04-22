@@ -66,6 +66,17 @@ public:
 	void incrementPlayerCorrectTurns() { ++uCorrectTurns_; }
 
 private:
+	friend IEntity* playerEntityCreateFunc(void* user);
+	friend IEntity* playerEntityDestroyFunc(IEntity* entity, void* user);
+
+	virtual void save() const;
+	virtual void load();
+
+	SDL_Texture* tTexture = NULL;
+
+	Uint32 uTurnsRemaining_;
+	Uint32 uCorrectTurns_;
+
 	float fPlayerVelocityX_;
 	float fPlayerVelocityY_;
 
@@ -78,18 +89,4 @@ private:
 	float fPlayerSpeed_;
 	int iPlayerHealth_;
 	float fBoundOffset_;
-
-	friend IEntity* playerEntityCreateFunc(void* user);
-	friend IEntity* playerEntityDestroyFunc(IEntity* entity, void* user);
-
-	virtual void save() const;
-	virtual void load();
-
-	bool saveHighScore(int highScore) const;
-	int loadHighScore();
-
-	SDL_Texture* tTexture = NULL;
-
-	Uint32 uTurnsRemaining_;
-	Uint32 uCorrectTurns_;
 };

@@ -63,8 +63,23 @@ bool Game::initialize(int ScreenWidth, int ScreenHeight)
 
 bool Game::loadInitialResources()
 {
+	fScreenWidth_ = static_cast<float>(SCREEN_WIDTH_);
+	fScreenHeight_ = static_cast<float>(SCREEN_HEIGHT_);
+	fConsoleRenderPosX_ = fScreenWidth_ * 0.1f;
+	fConsoleRenderPosY_ = fScreenHeight_ * 0.9f;
+	bMusicPlaying_ = false;
+	bStateSwitch_ = false;
+	uCurrentTime_ = 0;
+	uInitialTime_ = 0;
+	uStateTimer_ = 3000;
+	debugTextSize_ = 20;
+	textSize_ = 35;
+	textColor_ = { 255, 255, 255, 255 };
+	debugTextColor_ = { 0, 255, 0, 255 };
+
 	loadingProcess.callback = this;
 	LoadingProcess::LoadRequest toLoad;
+	
 	toLoad.resource = global::Res::Default;
 	loadingProcess.dataToLoad.push_back(toLoad);
 	toLoad.resource = global::Res::PlayerSprite;
@@ -82,6 +97,7 @@ bool Game::loadInitialResources()
 
 	global::processManager()->registerProcess(&loadingProcess, raw_enum(global::TaskID::Loading), raw_enum(global::TickOrder::DontCare), raw_enum(global::RenderOrder::DontCare));
 
+	/* RJP - Entity and Process Manager
 	playerTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::PlayerSprite));
 	mainMenuTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::MainMenuSprite));
 	backgroundTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::BackgroundSprite));
@@ -90,66 +106,39 @@ bool Game::loadInitialResources()
 	continueTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::ContinueSprite));
 	escapeTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::EscapeSprite));
 
+	global::entityManager()->registerEntityCreator(raw_enum(global::EntityType::Player), &playerEntityCreateFunc, &playerEntityDestroyFunc, nullptr);
 	playerEntity = static_cast<Player*>(global::entityManager()->createEntity(raw_enum(global::EntityType::Player)));
-	
+	*/
+
 	// RJP - Temporary texture loading - This is to be moved over to the Resource Manager.
 	SDL_Surface* surface = IMG_Load("Data/textures/main_menu.png");
 	mainMenuTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
 	SDL_FreeSurface(surface);
-
 	surface = IMG_Load("Data/textures/pathways.png");
 	backgroundTexture_ = SDL_CreateTextureFromSurface( gRenderer, surface );
 	SDL_FreeSurface(surface);
-
 	surface = IMG_Load("Data/textures/game_over.png");
 	gameOverTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
 	SDL_FreeSurface(surface);
-
 	surface = IMG_Load("Data/textures/dead_end.png");
 	deadEndTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
 	SDL_FreeSurface(surface);
-
 	surface = IMG_Load("Data/textures/continue.png");
 	continueTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
 	SDL_FreeSurface(surface);
-
 	surface = IMG_Load("Data/textures/escape.png");
 	escapeTexture_ = SDL_CreateTextureFromSurface(gRenderer, surface);
 	SDL_FreeSurface(surface);
 
-	// RJP - For testing demo. To be added to Entity Manager later.
-	playerEntity = new Player(); 
+	playerEntity = new Player();
 	playerEntity->init();
-
-	stateMachine = new StateMachine();
-
-	audio = new AudioPlayer();
-	textureRenderer = new Renderer(gRenderer);
-	console = new Console(*stateMachine, *playerEntity);
-	console->initConsole();
-
-	debugTextSize_ = 20;
-	textSize_ = 35;
-	textColor_ = { 255, 255, 255, 255 };
-	debugTextColor_ = { 0, 255, 0, 255 };
 	debugText = new Text(gRenderer, "Data/kenney/Fonts/kenneyPixel.ttf", debugTextSize_, debugTextColor_);
 	gameText = new Text(gRenderer, "Data/kenney/Fonts/kenneyPixel.ttf", textSize_, textColor_);
 	consoleText = new Text(gRenderer, "Data/kenney/Fonts/kenneyPixel.ttf", textSize_, textColor_);
-
-	controls = new Controls();
-	utils = new Utils();
-	
-	bMusicPlaying_ = false;
-	bStateSwitch_ = false;
-	uCurrentTime_ = 0;
-	uInitialTime_ = 0;
-	uStateTimer_ = 3000;
-
-	fScreenWidth_ = static_cast<float>(SCREEN_WIDTH_);
-	fScreenHeight_ = static_cast<float>(SCREEN_HEIGHT_);
-	
-	fConsoleRenderPosX_ = fScreenWidth_ * 0.1f;
-	fConsoleRenderPosY_ = fScreenHeight_ * 0.9f;
+	stateMachine = new StateMachine();
+	audio = new AudioPlayer();
+	textureRenderer = new Renderer(gRenderer);
+	console = new Console(*stateMachine, *playerEntity);
 
 	return true;
 }
@@ -161,7 +150,6 @@ void Game::start(const Info& info)
 #ifdef _DEBUG
 	//stateMachine->setState(GameState::ESCAPE);
 #endif
-
 }
 
 void Game::tickLogic( float deltaTime ) 
@@ -186,11 +174,6 @@ void Game::tickLogic( float deltaTime )
 				bMusicPlaying_ = true;
 			}
 
-			if (playerEntity->getPlayerTurnsRemaining() < 1)
-			{
-				
-			}
-
 			break;
 
 		case GameState::PAUSE:
@@ -204,6 +187,7 @@ void Game::tickLogic( float deltaTime )
 				bMusicPlaying_ = true;
 			}
 			break;
+
 		case GameState::DEADEND:
 			if (!bStateSwitch_)
 			{
@@ -233,6 +217,7 @@ void Game::tickLogic( float deltaTime )
 			}
 
 			break;
+
 		case GameState::ESCAPE:
 			if (!bMusicPlaying_)
 			{
@@ -257,8 +242,8 @@ void Game::render(const Info& info)
 	switch (stateMachine->getState())
 	{
 	case GameState::MENU:
-		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255); // RJP - Default background.
-		textureRenderer->textureRender(mainMenuTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, 0.28f, 0.28f); // RJP - offsetting values needs reworking - this is not scalable.
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+		textureRenderer->textureRender(mainMenuTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, mainMenuTextureScaleX_, mainMenuTextureScaleY_);
 		gameText->RenderConsoleText("Peril's Passage", static_cast<int>(fScreenWidth_ * 0.41f), static_cast<int>(fScreenHeight_ * 0.05f));
 		gameText->RenderConsoleText("Seeketh thou liberation? - [ TAB ]", static_cast<int>(fScreenWidth_ * 0.29f), static_cast<int>(fScreenHeight_ * 0.9f));
 #ifdef _DEBUG
@@ -268,13 +253,16 @@ void Game::render(const Info& info)
 
 	case GameState::PLAY:
 		// RJP - TODO - Fade to go here eventually.
-		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255); // RJP - Default background.
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 #ifdef _DEBUG
 		debugText->RenderDebugText("PLAYING", 10, 10);
 #endif
 		textureRenderer->textureRender(backgroundTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, 0.8f, 0.75f);
 		gameText->RenderGameText("In sooth, there be twain paths afore thee...", static_cast<int>(fScreenWidth_ * 0.05f), static_cast<int>(fScreenHeight_ * 0.05f));
-		gameText->RenderGameText("Choices remaining: " + std::to_string(playerEntity->getPlayerTurnsRemaining()), static_cast<int>(fScreenWidth_ * 0.4f), static_cast<int>(fScreenHeight_ * 0.9f));
+		gameText->RenderGameText("Correct choices: " + std::to_string(playerEntity->getPlayerCorrectTurns()), static_cast<int>(fScreenWidth_ * 0.7f),
+			static_cast<int>(fScreenHeight_ * 0.85f));
+		gameText->RenderGameText("Choices remaining: " + std::to_string(playerEntity->getPlayerTurnsRemaining()), static_cast<int>(fScreenWidth_ * 0.7f),
+			static_cast<int>(fScreenHeight_ * 0.9f));
 		// RJP - Render multiple previous lines - Add prevConsoleOutput to a list and loop through the list with an offset on the y axis.
 		gameText->RenderGameText(console->getPrevConsoleOutput(), static_cast<int>(fConsoleRenderPosX_), static_cast<int>(fConsoleRenderPosY_ - 30 ) );
 		consoleText->RenderConsoleText(console->getConsoleOutput(), static_cast<int>(fConsoleRenderPosX_), static_cast<int>(fConsoleRenderPosY_));
@@ -287,7 +275,8 @@ void Game::render(const Info& info)
 		gameText->RenderConsoleText("Confirm - [ RETURN ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.5f));
 		gameText->RenderConsoleText("Pause / Unpause - [ TAB ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.6f));
 		gameText->RenderConsoleText("Quit - [ ESC ]", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.7f));
-		gameText->RenderConsoleText("Make your way to the exit before your luck runs out...", static_cast<int>(fScreenWidth_ * 0.1f), static_cast<int>(fScreenHeight_ * 0.8f));
+		gameText->RenderConsoleText("Make your way to the exit before your luck runs out...", static_cast<int>(fScreenWidth_ * 0.1f), 
+			static_cast<int>(fScreenHeight_ * 0.8f));
 #ifdef _DEBUG
 		debugText->RenderConsoleText("PAUSE_MENU", 10, 10);
 #endif
@@ -307,7 +296,8 @@ void Game::render(const Info& info)
 
 		textureRenderer->textureRender(deadEndTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, 0.75f, 0.65f);
 		gameText->RenderGameText("Dead end...", static_cast<int>(fScreenWidth_ * 0.05f), static_cast<int>(fScreenHeight_ * 0.05f));
-		gameText->RenderGameText("Choices remaining: " + std::to_string(playerEntity->getPlayerTurnsRemaining()), static_cast<int>(fScreenWidth_ * 0.4f), static_cast<int>(fScreenHeight_ * 0.9f));
+		gameText->RenderGameText("Choices remaining: " + std::to_string(playerEntity->getPlayerTurnsRemaining()), static_cast<int>(fScreenWidth_ * 0.4f), 
+			static_cast<int>(fScreenHeight_ * 0.9f));
 #ifdef _DEBUG
 		debugText->RenderDebugText("DEAD_END", 10, 10);
 #endif
@@ -317,7 +307,8 @@ void Game::render(const Info& info)
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		textureRenderer->textureRender(continueTexture_, fScreenWidth_ * 0.0f, fScreenHeight_ * 0.1f, 0.8f, 0.65f);
 		gameText->RenderGameText("Fortune is in thy favour...", static_cast<int>(fScreenWidth_ * 0.05f), static_cast<int>(fScreenHeight_ * 0.05f));
-		gameText->RenderGameText("Choices remaining: " + std::to_string(playerEntity->getPlayerTurnsRemaining()), static_cast<int>(fScreenWidth_ * 0.4f), static_cast<int>(fScreenHeight_ * 0.9f));
+		gameText->RenderGameText("Choices remaining: " + std::to_string(playerEntity->getPlayerTurnsRemaining()), static_cast<int>(fScreenWidth_ * 0.4f),
+			static_cast<int>(fScreenHeight_ * 0.9f));
 #ifdef _DEBUG
 		debugText->RenderDebugText("CONTINUE", 10, 10);
 #endif
@@ -353,7 +344,7 @@ bool Game::handleEvents(float deltaTime)
 		case GameState::MENU:
 			while (SDL_PollEvent(&event_) != 0)
 			{
-				cUserInput_ = controls->handleInput(event_);
+				cUserInput_ = Controls::handleInput(event_);
 				if (cUserInput_ == '\a' && stateMachine->getState() == GameState::MENU)
 				{
 					stateMachine->setState(GameState::PAUSE);
@@ -370,7 +361,7 @@ bool Game::handleEvents(float deltaTime)
 
 			while (SDL_PollEvent(&event_) != 0)
 			{
-				cUserInput_ = controls->handleInput(event_);
+				cUserInput_ = Controls::handleInput(event_);
 				if (cUserInput_ == '\a' && stateMachine->getState() == GameState::PLAY) stateMachine->setState(GameState::PAUSE);
 				if (cUserInput_ != '\0') break;
 			}
@@ -407,7 +398,7 @@ bool Game::handleEvents(float deltaTime)
 
 			while (SDL_PollEvent(&event_) != 0)
 			{
-				cUserInput_ = controls->handleInput(event_);
+				cUserInput_ = Controls::handleInput(event_);
 				if (cUserInput_ == '\a' && stateMachine->getState() == GameState::PAUSE) stateMachine->setState(GameState::PLAY);
 			}
 
@@ -416,10 +407,10 @@ bool Game::handleEvents(float deltaTime)
 			break;
 
 		case GameState::GAMEOVER:
+
 			while (SDL_PollEvent(&event_) != 0)
 			{
-				cUserInput_ = controls->handleInput(event_);
-				if (cUserInput_ == '\a' && stateMachine->getState() == GameState::GAMEOVER) stateMachine->setState(GameState::MENU);
+				cUserInput_ = Controls::handleInput(event_);
 			}
 
 			if (console->manageInput(cUserInput_)) return 1;
@@ -442,7 +433,7 @@ bool Game::handleEvents(float deltaTime)
 	
 			while (SDL_PollEvent(&event_) != 0)
 			{
-				cUserInput_ = controls->handleInput(event_);
+				cUserInput_ = Controls::handleInput(event_);
 			}
 			if (console->manageInput(cUserInput_)) return 1;
 
@@ -463,15 +454,12 @@ void Game::close()
 	debugText = nullptr;
 	playerTexture_ = nullptr;
 	audio = nullptr;
-	controls = nullptr;
 	background = nullptr;
 	titleBackground = nullptr;
-
 	font = nullptr;
 	debugText = nullptr;
 	gameText = nullptr;
 	consoleText = nullptr;
-
 	playerTexture_ = nullptr;
 	backgroundTexture_ = nullptr;
 	mainMenuTexture_ = nullptr;
@@ -479,10 +467,8 @@ void Game::close()
 	deadEndTexture_ = nullptr;
 	continueTexture_ = nullptr;
 	escapeTexture_ = nullptr;
-
 	textureRenderer = nullptr;
 	stateMachine = nullptr;
-	utils = nullptr;
 	console = nullptr;
 	
 	Mix_Quit();
@@ -490,7 +476,6 @@ void Game::close()
 	SDL_Quit();
 	TTF_Quit();
 }
-
 
 void Game::onLoadComplete(LoadingProcess::LoadRequest* loadedResources, size_t count)
 {

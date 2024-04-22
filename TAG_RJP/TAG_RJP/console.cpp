@@ -7,18 +7,16 @@
 
 bool Console::initConsole() 
 {
-	utils = new Utils();
-
-	iMaxConsoleLen = 48;
-	sConsoleOutput = "";
-	sInputCheckL = "left";
-	sInputCheckR = "right";
-	iRandChoice = rand();
-	iEscapeNum = 8;
+	iMaxConsoleLen_ = 48;
+	sConsoleOutput_ = "";
+	sInputCheckL_ = "left";
+	sInputCheckR_ = "right";
+	iRandChoice_ = rand();
+	iEscapeNum_ = 8;
 
 #ifdef _DEBUG
-	sInputCheckDie = "die";
-	sInputCheckWin = "win";
+	sInputCheckDie_ = "die";
+	sInputCheckWin_ = "win";
 #endif
 
 	return true;
@@ -28,16 +26,17 @@ int Console::manageInput(char userInput)
 {
 	if ( userInput != '\0' )
 	{
-		if ( userInput == '\b' && !sConsoleOutput.empty() )
+		if ( userInput == '\b' && !sConsoleOutput_.empty() )
 		{
-			sConsoleOutput.pop_back(); // RJP - Backspace - Remove last letter.
+			sConsoleOutput_.pop_back(); // RJP - Backspace - Remove last letter.
 			return 0;
 		}
 		else if ( userInput == '\r' )
 		{
 			updateGame();
-			sPrevConsoleOutput = sConsoleOutput;
-			sConsoleOutput.clear(); // RJP - Enter - Reset console value after pressing enter.
+			sPrevConsoleOutput_ = sConsoleOutput_;
+			vConsoleOutput_.push_back(sConsoleOutput_); // RJP - Adding outputs to a list in case it's needed later.
+			sConsoleOutput_.clear(); // RJP - Enter - Reset console value after pressing enter.
 			return 0;
 		}
 		else if ( userInput == '\t' ) 
@@ -46,12 +45,11 @@ int Console::manageInput(char userInput)
 		}
 		else if ( userInput == '\a')
 		{
-			// RJP - Do nothing. // RJP - Tab - Change state.
-			return 0;
+			return 0; // RJP - Do nothing.
 		}
-		else if ( utils->stringLen(sConsoleOutput) < iMaxConsoleLen )
+		else if ( Utils::stringLen(sConsoleOutput_) < iMaxConsoleLen_ )
 		{
-			sConsoleOutput += userInput;
+			sConsoleOutput_ += userInput;
 			return 0;
 		}
 		return 0;
@@ -61,18 +59,18 @@ int Console::manageInput(char userInput)
 
 void Console::updateGame()
 {
-	if (sConsoleOutput == sInputCheckL || sConsoleOutput == sInputCheckR )
+	if (sConsoleOutput_ == sInputCheckL_ || sConsoleOutput_ == sInputCheckR_ )
 	{
 		checkChoice();
 		checkPlayerState();
 	}
 	
 #ifdef _DEBUG
-	else if (sConsoleOutput == sInputCheckDie)
+	else if (sConsoleOutput_ == sInputCheckDie_)
 	{
 		stateMachine_->setState(GameState::GAMEOVER);
 	}
-	else if (sConsoleOutput == sInputCheckWin)
+	else if (sConsoleOutput_ == sInputCheckWin_)
 	{
 		stateMachine_->setState(GameState::ESCAPE);
 	}
@@ -87,12 +85,12 @@ void Console::updateGame()
 
 bool Console::checkPlayerState()
 {
-	if (player_->getPlayerCorrectTurns() >= iEscapeNum)
+	if (player_->getPlayerCorrectTurns() >= iEscapeNum_)
 	{
 		stateMachine_->setState(GameState::ESCAPE);
 		return true;
 	}
-	if (player_->getPlayerTurnsRemaining() < 1)
+	if (player_->getPlayerTurnsRemaining() < 1 && stateMachine_->getState() != GameState::ESCAPE)
 	{
 		stateMachine_->setState(GameState::GAMEOVER);
 		return true;
@@ -102,10 +100,10 @@ bool Console::checkPlayerState()
 
 void Console::checkChoice()
 {
-	iRandChoice = rand();
+	iRandChoice_ = rand();
 	player_->decrementPlayerTurnsRemaining();
 
-	if (iRandChoice % 2 == 0) 
+	if (iRandChoice_ % 2 == 0) 
 	{
 		player_->incrementPlayerCorrectTurns();
 		stateMachine_->setState(GameState::CONTINUE);

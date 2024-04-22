@@ -55,7 +55,6 @@ private:
 	virtual void render(const Info& info);
 	virtual void endOfFrameUpdate(const Info& info) {};
 	virtual void completed(const Info& info) {};
-
 	virtual void onLoadComplete(LoadingProcess::LoadRequest* loadedResources, size_t count);
 
 	LoadingProcess loadingProcess;
@@ -84,12 +83,10 @@ private:
 	SDL_Event				event_;
 
 	AudioPlayer*			audio;
-	Controls*				controls;
 	ParallaxBackground*		background;
 	ParallaxBackground*		titleBackground;
 	Renderer*				textureRenderer;
 	StateMachine*			stateMachine;
-	Utils*					utils;
 	Console*				console;
 
 	std::string sPlayerScore_;
@@ -121,4 +118,7 @@ private:
 	bool bStateSwitch_;
 
 	char cUserInput_;
+
+	const float mainMenuTextureScaleX_ = 0.28f;
+	const float mainMenuTextureScaleY_ = 0.28f;
 };

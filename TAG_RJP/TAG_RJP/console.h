@@ -8,12 +8,17 @@
 #include "player.h"
 #include "gameState.h"
 #include <string>
+#include <iostream>
+#include <vector>
 #include "utils.h"
 
 class Console
 {
 public:
-	Console(StateMachine &stateMachine, Player &player) : stateMachine_(&stateMachine), player_(&player) {};
+	Console(StateMachine &stateMachine, Player &player) : stateMachine_(&stateMachine), player_(&player) 
+	{
+		initConsole();
+	};
 	~Console();
 
 	bool initConsole();
@@ -21,29 +26,31 @@ public:
 	void updateGame();
 	bool checkPlayerState();
 	void checkChoice();
+	inline void setEscapeNum(int iNewEscapeNum) { iEscapeNum_ = iNewEscapeNum; }
 
-	std::string getPrevConsoleOutput() { return sPrevConsoleOutput; }
-	std::string getConsoleOutput() { return sConsoleOutput; }
+	std::string getPrevConsoleOutput() { return sPrevConsoleOutput_; }
+	std::string getConsoleOutput() { return sConsoleOutput_; }
 
 protected:
 
 private:
-	Utils* utils;
 	Player* player_;
 	StateMachine* stateMachine_;
 
-	int iMaxConsoleLen;
-	int iRandChoice;
-	Uint32 iEscapeNum;
+	int iMaxConsoleLen_;
+	int iRandChoice_;
+	Uint32 iEscapeNum_;
 
-	std::string sConsoleOutput;
-	std::string sInputCheckL;
-	std::string sInputCheckR;
-	std::string sPrevConsoleOutput;
+	std::vector<std::string> vConsoleOutput_;
+
+	std::string sConsoleOutput_;
+	std::string sInputCheckL_;
+	std::string sInputCheckR_;
+	std::string sPrevConsoleOutput_;
 
 #ifdef _DEBUG
-	std::string sInputCheckDie;
-	std::string sInputCheckWin;
+	std::string sInputCheckDie_;
+	std::string sInputCheckWin_;
 #endif
 };
 	

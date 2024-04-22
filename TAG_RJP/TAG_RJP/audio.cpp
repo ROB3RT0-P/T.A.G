@@ -37,7 +37,6 @@ void AudioPlayer::play(const char* filePath)
     music = Mix_LoadMUS(filePath);
     if (music == nullptr) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Music missing.", SDL_GetError(), nullptr);
-        //SDL_Log("Unable to load music! SDL_mixer Error: %s\n", Mix_GetError());
         return;
     }
 

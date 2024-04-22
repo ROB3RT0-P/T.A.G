@@ -67,16 +67,16 @@ namespace // hidden namespace
 
 	ResourceManager::ResourceDBEntry resourceDatabase[] =
 	{
-		{ raw_enum(Res::Default),			"Data/textures/texture.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::PlayerSprite),		"kenney/Ships/.png",			ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::EnemySprite),		"kenney/Ships/.png",			ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::MainMenuSprite),	"Data/textures/main_menu.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::BackgroundSprite),	"Data/textures/pathway.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::GameOverSprite),	"Data/textures/game_over.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::ContinueSprite),	"Data/textures/continue.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::DeadEndSprite),		"Data/textures/dead_end.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::ContinueSprite),	"Data/textures/continue.png",	ResourceManager::ResourceType::Texture },
-		{ raw_enum(Res::EscapeSprite),		"Data/textures/escape.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::Default),			"Data/textures/texture.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::PlayerSprite),		"Data/textures/.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::EnemySprite),		"Data/textures/.png",				ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::MainMenuSprite),	"Data/textures/main_menu.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::BackgroundSprite),	"Data/textures/pathway.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::GameOverSprite),	"Data/textures/game_over.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::ContinueSprite),	"Data/textures/continue.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::DeadEndSprite),		"Data/textures/dead_end.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::ContinueSprite),	"Data/textures/continue.png",		ResourceManager::ResourceType::Texture },
+		{ raw_enum(Res::EscapeSprite),		"Data/textures/escape.png",			ResourceManager::ResourceType::Texture },
 	};
 }
 	Game* game() { return GameInstance; }
@@ -92,7 +92,8 @@ int main( int argc, char* args[] )
 	global::ProcessManagerInstance = new ProcessManager();
 	global::ResourceManagerInstance = new ResourceManager();
 	
-	global::resourceManager()->initializeResourceDatabase(global::resourceDatabase, sizeof(global::resourceDatabase) / sizeof(global::resourceDatabase[0]), raw_enum(global::Res::Max), "./Data/");
+	global::resourceManager()->initializeResourceDatabase(global::resourceDatabase, sizeof(global::resourceDatabase) / 
+		sizeof(global::resourceDatabase[0]), raw_enum(global::Res::Max), "./Data/");
 
 	if( !global::game()->initialize(800, 800))
 	{
