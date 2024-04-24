@@ -5,12 +5,15 @@
 
 #pragma once
 
-#include "player.h"
-#include "gameState.h"
 #include <string>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <type_traits>
+
 #include "utils.h"
+#include "player.h"
+#include "gameState.h"
 
 class Console
 {
@@ -30,6 +33,10 @@ public:
 
 	std::string getPrevConsoleOutput() { return sPrevConsoleOutput_; }
 	std::string getConsoleOutput() { return sConsoleOutput_; }
+
+	// RJP - Function template for generic equality check
+	template<typename T>
+	bool isEqual(const T& a, const T& b);
 
 protected:
 

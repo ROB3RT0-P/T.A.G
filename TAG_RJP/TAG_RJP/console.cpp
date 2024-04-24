@@ -113,3 +113,8 @@ void Console::checkChoice()
 		stateMachine_->setState(GameState::DEADEND);
 	}
 }
+
+template<typename T>
+bool Console::isEqual(const T& a, const T& b) {
+	return a == b;
+}
