@@ -105,10 +105,13 @@ bool Game::loadInitialResources()
 	deadEndTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::DeadEndSprite));
 	continueTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::ContinueSprite));
 	escapeTexture_ = global::resourceManager()->getResourceAsTexture(raw_enum(global::Res::EscapeSprite));
-
+		
 	global::entityManager()->registerEntityCreator(raw_enum(global::EntityType::Player), &playerEntityCreateFunc, &playerEntityDestroyFunc, nullptr);
 	playerEntity = static_cast<Player*>(global::entityManager()->createEntity(raw_enum(global::EntityType::Player)));
 	*/
+
+
+
 
 	// RJP - Temporary texture loading - This is to be moved over to the Resource Manager.
 	SDL_Surface* surface = IMG_Load("Data/textures/main_menu.png");

@@ -28,19 +28,9 @@
 /*********************************************************************************
 	RJP - TODO: 
 		Priority:
-				- Add exact sizes for rendering textures.
-				- Sound effects
-				- Zoom
 				- 
 		Non-Priority:
-				- Level Manager - Encapsulate rendering and logic.
-				- Resource Manager - Implemented but not fully utilised.
-				- Entity Manager - Implemented but not fully utilised.
-				- Multiple line console - Useful but not necessary at the moment.
-				- Inventory
-				- Difficulty Selector
-				- Screen fade
-
+				-
 *********************************************************************************/
 
 #include "global.h"
